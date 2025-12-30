@@ -96,6 +96,12 @@
             margin-bottom: 8px;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
         .nav-links {
             display: flex;
             gap: 48px;
@@ -114,6 +120,39 @@
 
         .nav-links a:hover {
             color: var(--text);
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            gap: 8px;
+            padding: 6px;
+            background: var(--bg-warm);
+            border-radius: 100px;
+            border: 1px solid var(--border);
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            color: var(--text);
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         /* Hero */
@@ -258,14 +297,6 @@
             font-size: 0.95rem;
             color: var(--text-light);
             line-height: 1.8;
-        }
-
-        /* Divider */
-        .divider {
-            width: 60px;
-            height: 1px;
-            background: var(--border);
-            margin: 0 auto;
         }
 
         /* Projects */
@@ -443,6 +474,10 @@
                 display: none;
             }
 
+            .nav-right {
+                gap: 0;
+            }
+
             section {
                 padding: 100px 28px;
             }
@@ -460,6 +495,11 @@
                 gap: 16px;
                 text-align: center;
                 padding: 32px 28px;
+            }
+
+            .lang-btn {
+                padding: 6px 10px;
+                font-size: 0.7rem;
             }
         }
 
@@ -485,19 +525,26 @@
 <body>
     <nav>
         <a href="#" class="logo">e<span class="dot"></span>studios</a>
-        <div class="nav-links">
-            <a href="#philosophy">Philosophy</a>
-            <a href="#work">Work</a>
-            <a href="#contact">Contact</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#philosophy" data-i18n="nav.philosophy">Philosophy</a>
+                <a href="#work" data-i18n="nav.work">Work</a>
+                <a href="#contact" data-i18n="nav.contact">Contact</a>
+            </div>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="de">DE</button>
+                <button class="lang-btn" data-lang="sq">SQ</button>
+            </div>
         </div>
     </nav>
 
     <section class="hero">
-        <p class="hero-eyebrow fade-in">App Development Studio</p>
+        <p class="hero-eyebrow fade-in" data-i18n="hero.eyebrow">App Development Studio</p>
         <h1 class="fade-in delay-1">e<span class="dot"></span>studios</h1>
-        <p class="hero-subtitle fade-in delay-2">Crafting beautiful, ethical applications for learning and creativity — with care.</p>
+        <p class="hero-subtitle fade-in delay-2" data-i18n="hero.subtitle">Crafting beautiful, ethical applications for learning and creativity — with care.</p>
         <div class="scroll-indicator fade-in delay-3">
-            <span>Scroll</span>
+            <span data-i18n="hero.scroll">Scroll</span>
             <div class="scroll-line"></div>
         </div>
     </section>
@@ -505,23 +552,23 @@
     <section class="philosophy" id="philosophy">
         <div class="section-header">
             <p class="section-number">01</p>
-            <h2 class="section-title">Our Philosophy</h2>
+            <h2 class="section-title" data-i18n="philosophy.title">Our Philosophy</h2>
         </div>
         <div class="philosophy-grid">
             <div class="philosophy-item">
                 <div class="philosophy-icon">✦</div>
-                <h3>Ad-Free Forever</h3>
-                <p>We believe learning should never be interrupted. Our applications contain no advertisements — ever.</p>
+                <h3 data-i18n="philosophy.adFree.title">Ad-Free Forever</h3>
+                <p data-i18n="philosophy.adFree.desc">We believe learning should never be interrupted. Our applications contain no advertisements — ever.</p>
             </div>
             <div class="philosophy-item">
                 <div class="philosophy-icon">◈</div>
-                <h3>Privacy First</h3>
-                <p>Your data belongs to you. We don't track, we don't collect, and we certainly don't sell.</p>
+                <h3 data-i18n="philosophy.privacy.title">Privacy First</h3>
+                <p data-i18n="philosophy.privacy.desc">Your data belongs to you. We don't track, we don't collect, and we certainly don't sell.</p>
             </div>
             <div class="philosophy-item">
                 <div class="philosophy-icon">❋</div>
-                <h3>Made for Everyone</h3>
-                <p>Multilingual from day one. German, English, Albanian — and always growing.</p>
+                <h3 data-i18n="philosophy.everyone.title">Made for Everyone</h3>
+                <p data-i18n="philosophy.everyone.desc">Multilingual from day one. German, English, Albanian — and always growing.</p>
             </div>
         </div>
     </section>
@@ -529,60 +576,268 @@
     <section id="work">
         <div class="section-header">
             <p class="section-number">02</p>
-            <h2 class="section-title">Selected Work</h2>
+            <h2 class="section-title" data-i18n="work.title">Selected Work</h2>
         </div>
         <div class="projects-list">
             <a href="https://music-practice-rosy.vercel.app" target="_blank" class="project-item">
                 <span class="project-number">i</span>
                 <div class="project-info">
                     <h3 class="project-title">Virtuoso</h3>
-                    <p class="project-desc">A comprehensive music practice platform for theory, ear training, and mastery.</p>
+                    <p class="project-desc" data-i18n="work.virtuoso.desc">A comprehensive music practice platform for theory, ear training, and mastery.</p>
                 </div>
-                <span class="project-status status-live">Live</span>
+                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
             <a href="https://pecs-platform.vercel.app" target="_blank" class="project-item">
                 <span class="project-number">ii</span>
                 <div class="project-info">
                     <h3 class="project-title">PECS Learning</h3>
-                    <p class="project-desc">Visual communication platform designed for children with autism.</p>
+                    <p class="project-desc" data-i18n="work.pecs.desc">Visual communication platform designed for children with autism.</p>
                 </div>
-                <span class="project-status status-live">Live</span>
+                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
             <a href="https://dola.vercel.app" target="_blank" class="project-item">
                 <span class="project-number">iii</span>
                 <div class="project-info">
                     <h3 class="project-title">Dola</h3>
-                    <p class="project-desc">Discover events and happenings in your local community.</p>
+                    <p class="project-desc" data-i18n="work.dola.desc">Discover events and happenings in your local community.</p>
                 </div>
-                <span class="project-status status-live">Live</span>
+                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
             <div class="project-item">
                 <span class="project-number">iv</span>
                 <div class="project-info">
                     <h3 class="project-title">Math Adventures</h3>
-                    <p class="project-desc">Interactive mathematics learning for children in grades 1–4.</p>
+                    <p class="project-desc" data-i18n="work.math.desc">Interactive mathematics learning for children in grades 1–4.</p>
                 </div>
-                <span class="project-status status-dev">In Development</span>
+                <span class="project-status status-dev" data-i18n="work.status.dev">In Development</span>
             </div>
             <div class="project-item">
                 <span class="project-number">v</span>
                 <div class="project-info">
                     <h3 class="project-title">MesoGjermanisht</h3>
-                    <p class="project-desc">German language lessons crafted for Albanian speakers.</p>
+                    <p class="project-desc" data-i18n="work.meso.desc">German language lessons crafted for Albanian speakers.</p>
                 </div>
-                <span class="project-status status-dev">In Development</span>
+                <span class="project-status status-dev" data-i18n="work.status.dev">In Development</span>
             </div>
         </div>
     </section>
 
     <section class="contact" id="contact">
-        <h2 class="contact-title">Let's create something<br>beautiful together.</h2>
+        <h2 class="contact-title" data-i18n="contact.title">Let's create something<br>beautiful together.</h2>
         <a href="mailto:contact@e-studios.net" class="contact-email">contact@e-studios.net</a>
     </section>
 
     <footer>
         <span class="footer-logo">e<span class="dot"></span>studios</span>
-        <p>© 2025 e-studios. Based in Germany.</p>
+        <p data-i18n="footer.text">© 2025 e-studios. Based in Germany.</p>
     </footer>
+
+    <script>
+        const translations = {
+            en: {
+                nav: {
+                    philosophy: "Philosophy",
+                    work: "Work",
+                    contact: "Contact"
+                },
+                hero: {
+                    eyebrow: "App Development Studio",
+                    subtitle: "Crafting beautiful, ethical applications for learning and creativity — with care.",
+                    scroll: "Scroll"
+                },
+                philosophy: {
+                    title: "Our Philosophy",
+                    adFree: {
+                        title: "Ad-Free Forever",
+                        desc: "We believe learning should never be interrupted. Our applications contain no advertisements — ever."
+                    },
+                    privacy: {
+                        title: "Privacy First",
+                        desc: "Your data belongs to you. We don't track, we don't collect, and we certainly don't sell."
+                    },
+                    everyone: {
+                        title: "Made for Everyone",
+                        desc: "Multilingual from day one. German, English, Albanian — and always growing."
+                    }
+                },
+                work: {
+                    title: "Selected Work",
+                    virtuoso: {
+                        desc: "A comprehensive music practice platform for theory, ear training, and mastery."
+                    },
+                    pecs: {
+                        desc: "Visual communication platform designed for children with autism."
+                    },
+                    dola: {
+                        desc: "Discover events and happenings in your local community."
+                    },
+                    math: {
+                        desc: "Interactive mathematics learning for children in grades 1–4."
+                    },
+                    meso: {
+                        desc: "German language lessons crafted for Albanian speakers."
+                    },
+                    status: {
+                        live: "Live",
+                        dev: "In Development"
+                    }
+                },
+                contact: {
+                    title: "Let's create something<br>beautiful together."
+                },
+                footer: {
+                    text: "© 2025 e-studios. Based in Germany."
+                }
+            },
+            de: {
+                nav: {
+                    philosophy: "Philosophie",
+                    work: "Projekte",
+                    contact: "Kontakt"
+                },
+                hero: {
+                    eyebrow: "App-Entwicklungsstudio",
+                    subtitle: "Wir entwickeln schöne, ethische Anwendungen für Lernen und Kreativität — mit Sorgfalt.",
+                    scroll: "Scrollen"
+                },
+                philosophy: {
+                    title: "Unsere Philosophie",
+                    adFree: {
+                        title: "Für immer werbefrei",
+                        desc: "Wir glauben, dass Lernen niemals unterbrochen werden sollte. Unsere Anwendungen enthalten keine Werbung — niemals."
+                    },
+                    privacy: {
+                        title: "Datenschutz zuerst",
+                        desc: "Ihre Daten gehören Ihnen. Wir tracken nicht, wir sammeln nicht, und wir verkaufen definitiv nicht."
+                    },
+                    everyone: {
+                        title: "Für alle gemacht",
+                        desc: "Von Anfang an mehrsprachig. Deutsch, Englisch, Albanisch — und wir wachsen weiter."
+                    }
+                },
+                work: {
+                    title: "Ausgewählte Arbeiten",
+                    virtuoso: {
+                        desc: "Eine umfassende Musik-Übungsplattform für Theorie, Gehörbildung und Meisterschaft."
+                    },
+                    pecs: {
+                        desc: "Visuelle Kommunikationsplattform für Kinder mit Autismus."
+                    },
+                    dola: {
+                        desc: "Entdecke Veranstaltungen und Ereignisse in deiner lokalen Gemeinschaft."
+                    },
+                    math: {
+                        desc: "Interaktives Mathematiklernen für Kinder der Klassen 1–4."
+                    },
+                    meso: {
+                        desc: "Deutschkurse speziell für albanischsprachige Lernende."
+                    },
+                    status: {
+                        live: "Live",
+                        dev: "In Entwicklung"
+                    }
+                },
+                contact: {
+                    title: "Lass uns gemeinsam<br>etwas Schönes schaffen."
+                },
+                footer: {
+                    text: "© 2025 e-studios. Mit Sitz in Deutschland."
+                }
+            },
+            sq: {
+                nav: {
+                    philosophy: "Filozofia",
+                    work: "Punët",
+                    contact: "Kontakti"
+                },
+                hero: {
+                    eyebrow: "Studio për Zhvillimin e Aplikacioneve",
+                    subtitle: "Krijojmë aplikacione të bukura dhe etike për mësim dhe kreativitet — me kujdes.",
+                    scroll: "Lëviz"
+                },
+                philosophy: {
+                    title: "Filozofia Jonë",
+                    adFree: {
+                        title: "Pa Reklama Përgjithmonë",
+                        desc: "Besojmë se mësimi nuk duhet ndërprerë kurrë. Aplikacionet tona nuk përmbajnë reklama — asnjëherë."
+                    },
+                    privacy: {
+                        title: "Privatësia së Pari",
+                        desc: "Të dhënat tuaja ju përkasin juve. Ne nuk gjurmojmë, nuk mbledhim dhe sigurisht nuk shesim."
+                    },
+                    everyone: {
+                        title: "Krijuar për të Gjithë",
+                        desc: "Shumëgjuhësh që nga dita e parë. Gjermanisht, Anglisht, Shqip — dhe vazhdojmë të rritemi."
+                    }
+                },
+                work: {
+                    title: "Punët e Zgjedhura",
+                    virtuoso: {
+                        desc: "Një platformë gjithëpërfshirëse për praktikën e muzikës, teorinë, trajnimin e veshit dhe përsosmërinë."
+                    },
+                    pecs: {
+                        desc: "Platformë komunikimi vizual e dizajnuar për fëmijët me autizëm."
+                    },
+                    dola: {
+                        desc: "Zbulo ngjarjet dhe aktivitetet në komunitetin tënd lokal."
+                    },
+                    math: {
+                        desc: "Mësim interaktiv i matematikës për fëmijët e klasave 1–4."
+                    },
+                    meso: {
+                        desc: "Mësime të gjuhës gjermane të krijuara për folësit shqiptarë."
+                    },
+                    status: {
+                        live: "Aktiv",
+                        dev: "Në Zhvillim"
+                    }
+                },
+                contact: {
+                    title: "Le të krijojmë<br>diçka të bukur së bashku."
+                },
+                footer: {
+                    text: "© 2025 e-studios. Me seli në Gjermani."
+                }
+            }
+        };
+
+        function getNestedValue(obj, path) {
+            return path.split('.').reduce((current, key) => current?.[key], obj);
+        }
+
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = getNestedValue(translations[lang], key);
+                if (translation) {
+                    element.innerHTML = translation;
+                }
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            localStorage.setItem('preferred-language', lang);
+        }
+
+        // Initialize
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+        });
+
+        // Check for saved preference or browser language
+        const savedLang = localStorage.getItem('preferred-language');
+        const browserLang = navigator.language.slice(0, 2);
+        const supportedLangs = ['en', 'de', 'sq'];
+
+        if (savedLang && supportedLangs.includes(savedLang)) {
+            setLanguage(savedLang);
+        } else if (supportedLangs.includes(browserLang)) {
+            setLanguage(browserLang);
+        }
+    </script>
 </body>
 </html>
