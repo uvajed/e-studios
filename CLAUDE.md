@@ -38,6 +38,16 @@ Elegant editorial aesthetic with light theme:
 
 **Brand element:** Gold dot (`.dot`) used in logo and throughout.
 
+**Color accents:**
+- Philosophy icons: sage green (#7eb8a2), dusty blue (#8fa3bf), dusty rose (#d4a5a5)
+- Project icons: subtle gradient backgrounds (lavender, mint, peach, terracotta, blue, sage)
+
+## Animations
+
+**Scroll reveal:** Elements with `.reveal` and `.reveal-item` classes fade in and slide up when scrolling into view (Intersection Observer). Staggered delays applied via `nth-child`.
+
+**Sticky sections:** Philosophy and Contact sections use `position: sticky` to overlap previous sections as you scroll (Apple-style effect). Work section scrolls normally due to tall content.
+
 ## Multilingual Support
 
 Three languages with JavaScript-based switching:
