@@ -67,4 +67,13 @@ To add/edit translations, modify the `translations` object. Keys use dot notatio
 
 ## Projects
 
-Live apps link to Vercel deployments. Project names are not translated (brand names).
+Live apps are hosted on Vercel with subdomains at `*.e-studios.net`:
+- virtuoso.e-studios.net (music practice)
+- pecs.e-studios.net (visual communication for autism)
+- dola.e-studios.net (local events)
+- agape.e-studios.net (restaurant menu)
+- math.e-studios.net (kids math learning)
+- breathe.e-studios.net (breathing exercises)
+- meso.e-studios.net (German for Albanian speakers)
+
+Project names are not translated (brand names). All apps include footer with e·studios link and donate button (PayPal).
