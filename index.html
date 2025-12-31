@@ -394,6 +394,11 @@
             border-color: #d0e0d5;
         }
 
+        .project-icon.icon-sudoku {
+            background: linear-gradient(135deg, #e0e8f5 0%, #e8f0fa 100%);
+            border-color: #c8d8e8;
+        }
+
         .project-icon img {
             width: 100%;
             height: 100%;
@@ -661,6 +666,7 @@
         .project-item.reveal-item:nth-child(5) { transition-delay: 0.25s; }
         .project-item.reveal-item:nth-child(6) { transition-delay: 0.3s; }
         .project-item.reveal-item:nth-child(7) { transition-delay: 0.35s; }
+        .project-item.reveal-item:nth-child(8) { transition-delay: 0.4s; }
     </style>
 </head>
 <body>
@@ -790,6 +796,16 @@
                 </div>
                 <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
+            <a href="https://sudoku-estudios.vercel.app" target="_blank" class="project-item reveal-item">
+                <div class="project-icon icon-sudoku">
+                    <span class="project-icon-placeholder">S</span>
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">Sudoku</h3>
+                    <p class="project-desc" data-i18n="work.sudoku.desc">A beautiful brain-training puzzle game with hints and notes mode.</p>
+                </div>
+                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+            </a>
         </div>
     </section>
 
@@ -854,6 +870,9 @@
                     meso: {
                         desc: "German language lessons crafted for Albanian speakers."
                     },
+                    sudoku: {
+                        desc: "A beautiful brain-training puzzle game with hints and notes mode."
+                    },
                     status: {
                         live: "Live",
                         dev: "In Development"
@@ -915,6 +934,9 @@
                     meso: {
                         desc: "Deutschkurse speziell für albanischsprachige Lernende."
                     },
+                    sudoku: {
+                        desc: "Ein schönes Gehirntraining-Puzzlespiel mit Hinweisen und Notizmodus."
+                    },
                     status: {
                         live: "Live",
                         dev: "In Entwicklung"
@@ -975,6 +997,9 @@
                     },
                     meso: {
                         desc: "Mësime të gjuhës gjermane të krijuara për folësit shqiptarë."
+                    },
+                    sudoku: {
+                        desc: "Lojë e bukur puzzle për stërvitjen e trurit me ndihma dhe shënime."
                     },
                     status: {
                         live: "Aktiv",
