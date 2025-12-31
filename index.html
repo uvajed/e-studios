@@ -309,14 +309,46 @@
 
         .project-item {
             display: grid;
-            grid-template-columns: 1fr 2fr auto;
-            gap: 60px;
+            grid-template-columns: auto 1fr auto;
+            gap: 40px;
             align-items: center;
             padding: 60px 0;
             border-bottom: 1px solid var(--border);
             text-decoration: none;
             color: inherit;
             transition: all 0.4s ease;
+        }
+
+        .project-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: var(--bg-warm);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .project-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-icon-placeholder {
+            font-family: var(--serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--text-light);
+            letter-spacing: -0.02em;
+        }
+
+        .project-item:hover .project-icon {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(201, 168, 124, 0.15);
         }
 
         .project-item:first-child {
@@ -331,12 +363,6 @@
             color: var(--accent-dark);
         }
 
-        .project-number {
-            font-family: var(--serif);
-            font-size: 1rem;
-            font-style: italic;
-            color: var(--text-lighter);
-        }
 
         .project-info {
             display: flex;
@@ -458,12 +484,23 @@
             }
 
             .project-item {
-                grid-template-columns: 1fr;
-                gap: 16px;
+                grid-template-columns: auto 1fr;
+                gap: 20px;
             }
 
-            .project-number {
-                display: none;
+            .project-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: 12px;
+            }
+
+            .project-icon-placeholder {
+                font-size: 1.4rem;
+            }
+
+            .project-status {
+                grid-column: 2;
+                justify-self: start;
             }
         }
 
@@ -582,7 +619,9 @@
         </div>
         <div class="projects-list">
             <a href="https://music-practice-rosy.vercel.app" target="_blank" class="project-item">
-                <span class="project-number">i</span>
+                <div class="project-icon">
+                    <span class="project-icon-placeholder">V</span>
+                </div>
                 <div class="project-info">
                     <h3 class="project-title">Virtuoso</h3>
                     <p class="project-desc" data-i18n="work.virtuoso.desc">A comprehensive music practice platform for theory, ear training, and mastery.</p>
@@ -590,7 +629,9 @@
                 <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
             <a href="https://pecs-platform.vercel.app" target="_blank" class="project-item">
-                <span class="project-number">ii</span>
+                <div class="project-icon">
+                    <span class="project-icon-placeholder">P</span>
+                </div>
                 <div class="project-info">
                     <h3 class="project-title">PECS Learning</h3>
                     <p class="project-desc" data-i18n="work.pecs.desc">Visual communication platform designed for children with autism.</p>
@@ -598,7 +639,9 @@
                 <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
             <a href="https://dola.vercel.app" target="_blank" class="project-item">
-                <span class="project-number">iii</span>
+                <div class="project-icon">
+                    <span class="project-icon-placeholder">D</span>
+                </div>
                 <div class="project-info">
                     <h3 class="project-title">Dola</h3>
                     <p class="project-desc" data-i18n="work.dola.desc">Discover events and happenings in your local community.</p>
@@ -606,7 +649,9 @@
                 <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
             <div class="project-item">
-                <span class="project-number">iv</span>
+                <div class="project-icon">
+                    <span class="project-icon-placeholder">M</span>
+                </div>
                 <div class="project-info">
                     <h3 class="project-title">Math Adventures</h3>
                     <p class="project-desc" data-i18n="work.math.desc">Interactive mathematics learning for children in grades 1–4.</p>
@@ -614,7 +659,9 @@
                 <span class="project-status status-dev" data-i18n="work.status.dev">In Development</span>
             </div>
             <div class="project-item">
-                <span class="project-number">v</span>
+                <div class="project-icon">
+                    <span class="project-icon-placeholder">M</span>
+                </div>
                 <div class="project-info">
                     <h3 class="project-title">MesoGjermanisht</h3>
                     <p class="project-desc" data-i18n="work.meso.desc">German language lessons crafted for Albanian speakers.</p>
