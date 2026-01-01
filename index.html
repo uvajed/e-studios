@@ -404,6 +404,11 @@
             border-color: #c8e8d8;
         }
 
+        .project-icon.icon-framematch {
+            background: linear-gradient(135deg, #fde8e0 0%, #fef0e8 100%);
+            border-color: #f0d0c0;
+        }
+
         .project-icon img {
             width: 100%;
             height: 100%;
@@ -733,6 +738,16 @@
             <h2 class="section-title" data-i18n="work.title">Selected Work</h2>
         </div>
         <div class="projects-list">
+            <a href="https://framematch.pages.dev" target="_blank" class="project-item reveal-item">
+                <div class="project-icon icon-framematch">
+                    <span class="project-icon-placeholder">FM</span>
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">FrameMatch</h3>
+                    <p class="project-desc" data-i18n="work.framematch.desc">AI-powered shot analysis for photographers and cinematographers.</p>
+                </div>
+                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+            </a>
             <a href="https://music-virtuoso.vercel.app" target="_blank" class="project-item reveal-item">
                 <div class="project-icon icon-virtuoso">
                     <span class="project-icon-placeholder">V</span>
@@ -866,6 +881,9 @@
                 },
                 work: {
                     title: "Selected Work",
+                    framematch: {
+                        desc: "AI-powered shot analysis for photographers and cinematographers."
+                    },
                     virtuoso: {
                         desc: "A comprehensive music practice platform for theory, ear training, and mastery."
                     },
@@ -933,6 +951,9 @@
                 },
                 work: {
                     title: "Ausgewählte Arbeiten",
+                    framematch: {
+                        desc: "KI-gestützte Bildanalyse für Fotografen und Kameraleute."
+                    },
                     virtuoso: {
                         desc: "Eine umfassende Musik-Übungsplattform für Theorie, Gehörbildung und Meisterschaft."
                     },
@@ -1000,6 +1021,9 @@
                 },
                 work: {
                     title: "Punët e Zgjedhura",
+                    framematch: {
+                        desc: "Analizë e fotografive me AI për fotografë dhe kinematografë."
+                    },
                     virtuoso: {
                         desc: "Një platformë gjithëpërfshirëse për praktikën e muzikës, teorinë, trajnimin e veshit dhe përsosmërinë."
                     },
