@@ -23,19 +23,35 @@
     <meta name="twitter:image" content="https://www.e-studios.net/og-image.png">
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23faf9f7'/%3E%3Ctext x='15' y='75' font-family='Georgia,serif' font-size='70' font-weight='400' fill='%231a1a1a'%3Ee%3C/text%3E%3Ccircle cx='72' cy='40' r='10' fill='%23c9a87c'/%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg: #faf9f7;
             --bg-warm: #f5f3ef;
+            --bg-card: rgba(255, 255, 255, 0.6);
             --text: #1a1a1a;
-            --text-light: #666666;
-            --text-lighter: #999999;
+            --text-light: #555;
+            --text-lighter: #888;
             --accent: #c9a87c;
             --accent-dark: #b8956a;
-            --border: #e8e4df;
+            --accent-glow: rgba(201, 168, 124, 0.3);
+            --border: rgba(0, 0, 0, 0.06);
+            --border-strong: rgba(0, 0, 0, 0.1);
+            --sage: #7eb8a2;
+            --sage-soft: rgba(126, 184, 162, 0.15);
+            --blue: #8fa3bf;
+            --blue-soft: rgba(143, 163, 191, 0.15);
+            --rose: #d4a5a5;
+            --rose-soft: rgba(212, 165, 165, 0.15);
             --serif: 'Cormorant Garamond', Georgia, serif;
-            --sans: 'Inter', -apple-system, sans-serif;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --radius: 20px;
+            --radius-sm: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.06);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.08);
+            --shadow-glow: 0 8px 40px var(--accent-glow);
         }
 
         * {
@@ -55,11 +71,27 @@
             line-height: 1.7;
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         ::selection {
             background: var(--accent);
             color: white;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 1000;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
         /* Navigation */
@@ -68,96 +100,192 @@
             top: 0;
             left: 0;
             right: 0;
-            padding: 28px 60px;
+            padding: 24px 48px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 100;
-            background: rgba(250, 249, 247, 0.9);
+            background: rgba(250, 249, 247, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            padding: 16px 48px;
+            box-shadow: var(--shadow-sm);
         }
 
         .logo {
             font-family: var(--serif);
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 400;
             color: var(--text);
             text-decoration: none;
             letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0;
         }
 
         .logo .dot {
             display: inline-block;
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             background: var(--accent);
             border-radius: 50%;
-            margin: 0 1px;
-            vertical-align: middle;
-            margin-bottom: 8px;
+            margin: 0 2px;
+            margin-bottom: 6px;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 48px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-center a {
+            font-family: var(--sans);
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-center a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-center a:hover {
+            color: var(--text);
+        }
+
+        .nav-center a:hover::after {
+            width: 100%;
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 16px;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 48px;
-        }
-
-        .nav-links a {
-            font-family: var(--sans);
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text);
-        }
-
-        /* Language Switcher */
+        /* Language Switcher - Minimal */
         .lang-switcher {
             display: flex;
-            gap: 8px;
-            padding: 6px;
-            background: var(--bg-warm);
-            border-radius: 100px;
-            border: 1px solid var(--border);
+            gap: 4px;
         }
 
         .lang-btn {
-            padding: 6px 12px;
+            padding: 6px 10px;
             border: none;
             background: transparent;
             font-family: var(--sans);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
-            color: var(--text-light);
+            color: var(--text-lighter);
             cursor: pointer;
-            border-radius: 100px;
+            border-radius: 6px;
             transition: all 0.2s ease;
+            letter-spacing: 0.02em;
         }
 
         .lang-btn:hover {
-            color: var(--text);
+            color: var(--text-light);
+            background: var(--border);
         }
 
         .lang-btn.active {
-            background: white;
-            color: var(--text);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: var(--text);
+            color: var(--bg);
         }
 
-        /* Hero */
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 101;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 99;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu a {
+            font-family: var(--serif);
+            font-size: 2.5rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -165,311 +293,525 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 160px 40px 120px;
+            padding: 140px 40px 100px;
             position: relative;
+            overflow: hidden;
             background: var(--bg);
+            z-index: 0;
+        }
+
+        /* Floating Orbs */
+        .orbs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.5;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(201, 168, 124, 0.4) 0%, transparent 70%);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(126, 184, 162, 0.3) 0%, transparent 70%);
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(143, 163, 191, 0.3) 0%, transparent 70%);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        .orb-4 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(212, 165, 165, 0.25) 0%, transparent 70%);
+            top: 30%;
+            right: 25%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(30px, -30px) scale(1.05);
+            }
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+            75% {
+                transform: translate(-30px, -20px) scale(1.02);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
 
         .hero-eyebrow {
             font-family: var(--sans);
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--accent-dark);
-            margin-bottom: 32px;
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.2s;
         }
 
         .hero h1 {
             font-family: var(--serif);
-            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-size: clamp(4rem, 12vw, 10rem);
             font-weight: 300;
-            letter-spacing: -0.03em;
-            line-height: 1;
-            margin-bottom: 40px;
+            letter-spacing: -0.04em;
+            line-height: 0.9;
+            margin-bottom: 32px;
             color: var(--text);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+            animation-delay: 0.4s;
         }
 
         .hero h1 .dot {
             display: inline-block;
-            width: clamp(12px, 2vw, 24px);
-            height: clamp(12px, 2vw, 24px);
+            width: clamp(14px, 2.5vw, 28px);
+            height: clamp(14px, 2.5vw, 28px);
             background: var(--accent);
             border-radius: 50%;
-            margin: 0 4px;
+            margin: 0 6px;
             vertical-align: middle;
-            margin-bottom: clamp(12px, 2vw, 28px);
+            margin-bottom: clamp(14px, 3vw, 36px);
+            box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow); }
+            50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--accent-glow); }
         }
 
         .hero-subtitle {
             font-family: var(--serif);
-            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
             font-weight: 400;
             font-style: italic;
             color: var(--text-light);
-            max-width: 600px;
-            line-height: 1.6;
+            max-width: 550px;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.6s;
         }
 
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll Indicator */
         .scroll-indicator {
             position: absolute;
-            bottom: 60px;
+            bottom: 48px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            color: var(--text-lighter);
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .scroll-text {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
+            color: var(--text-lighter);
         }
 
         .scroll-line {
             width: 1px;
-            height: 60px;
-            background: linear-gradient(to bottom, var(--border), transparent);
-            animation: scrollPulse 2s ease-in-out infinite;
+            height: 48px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            position: relative;
         }
 
-        @keyframes scrollPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+        .scroll-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 16px;
+            background: var(--accent);
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { top: 0; opacity: 1; }
+            100% { top: 100%; opacity: 0; }
         }
 
         /* Sections - Sticky overlap effect */
         section {
-            padding: 140px 60px;
+            padding: 120px 48px;
             position: -webkit-sticky;
             position: sticky;
             top: 0;
             background: var(--bg);
             min-height: 100vh;
+            z-index: 1;
         }
 
-        section .section-header,
-        section .philosophy-grid,
-        section .projects-list {
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 100px;
+            margin-bottom: 80px;
         }
 
         .section-number {
             font-family: var(--serif);
-            font-size: 0.9rem;
-            color: var(--accent-dark);
-            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 16px;
             font-style: italic;
+            font-weight: 500;
         }
 
         .section-title {
             font-family: var(--serif);
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 300;
             letter-spacing: -0.02em;
             color: var(--text);
         }
 
-        /* Philosophy */
+        /* Philosophy Section */
         .philosophy {
             background: var(--bg-warm);
-            box-shadow: 0 -20px 40px rgba(0,0,0,0.03);
-        }
-
-        /* Work section - not sticky due to tall content */
-        #work {
-            background: var(--bg);
-            box-shadow: 0 -20px 40px rgba(0,0,0,0.03);
-            position: relative;
-            min-height: auto;
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.06);
+            z-index: 2;
         }
 
         .philosophy-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 60px;
+            gap: 32px;
         }
 
-        .philosophy-item {
+        .philosophy-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 48px 36px;
             text-align: center;
-            padding: 40px 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .philosophy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .philosophy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .philosophy-card:hover::before {
+            opacity: 1;
+        }
+
+        .philosophy-card.card-sage::before { background: var(--sage); }
+        .philosophy-card.card-blue::before { background: var(--blue); }
+        .philosophy-card.card-rose::before { background: var(--rose); }
 
         .philosophy-icon {
-            font-size: 2rem;
-            margin-bottom: 28px;
-        }
-
-        .philosophy-icon.icon-adfree {
-            color: #7eb8a2;
-        }
-
-        .philosophy-icon.icon-privacy {
-            color: #8fa3bf;
-        }
-
-        .philosophy-icon.icon-everyone {
-            color: #d4a5a5;
-        }
-
-        .philosophy-item h3 {
-            font-family: var(--serif);
-            font-size: 1.5rem;
-            font-weight: 400;
-            margin-bottom: 16px;
-            color: var(--text);
-        }
-
-        .philosophy-item p {
-            font-size: 0.95rem;
-            color: var(--text-light);
-            line-height: 1.8;
-        }
-
-        /* Projects */
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-item {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 40px;
-            align-items: center;
-            padding: 60px 0;
-            border-bottom: 1px solid var(--border);
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s ease;
-        }
-
-        .project-icon {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 28px;
             border-radius: 16px;
-            background: var(--bg-warm);
-            border: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            transition: all 0.3s ease;
         }
 
-        .project-icon.icon-virtuoso {
-            background: linear-gradient(135deg, #e8e0f0 0%, #f0e8f5 100%);
-            border-color: #d8d0e8;
+        .philosophy-icon.icon-sage {
+            background: var(--sage-soft);
         }
 
-        .project-icon.icon-pecs {
-            background: linear-gradient(135deg, #dff0ed 0%, #e8f5f2 100%);
-            border-color: #c8e0dc;
+        .philosophy-icon.icon-blue {
+            background: var(--blue-soft);
         }
 
-        .project-icon.icon-dola {
-            background: linear-gradient(135deg, #f5ebe0 0%, #faf0e6 100%);
-            border-color: #e8dcd0;
+        .philosophy-icon.icon-rose {
+            background: var(--rose-soft);
         }
 
-        .project-icon.icon-agape {
-            background: linear-gradient(135deg, #f0e6e0 0%, #f8ede8 100%);
-            border-color: #e0d4cc;
+        .philosophy-icon svg {
+            width: 28px;
+            height: 28px;
         }
 
-        .project-icon.icon-math {
-            background: linear-gradient(135deg, #e0eaf5 0%, #e8f0fa 100%);
-            border-color: #d0dce8;
-        }
-
-        .project-icon.icon-meso {
-            background: linear-gradient(135deg, #e5f0e8 0%, #ecf5ef 100%);
-            border-color: #d0e0d5;
-        }
-
-        .project-icon.icon-sudoku {
-            background: linear-gradient(135deg, #e0e8f5 0%, #e8f0fa 100%);
-            border-color: #c8d8e8;
-        }
-
-        .project-icon.icon-qrcode {
-            background: linear-gradient(135deg, #e0f5e8 0%, #e8faf0 100%);
-            border-color: #c8e8d8;
-        }
-
-        .project-icon.icon-framematch {
-            background: linear-gradient(135deg, #fde8e0 0%, #fef0e8 100%);
-            border-color: #f0d0c0;
-        }
-
-        .project-icon.icon-stringlogic {
-            background: linear-gradient(135deg, #e0e8f8 0%, #e8f0ff 100%);
-            border-color: #c8d8f0;
-        }
-
-        .project-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .project-icon-placeholder {
+        .philosophy-card h3 {
             font-family: var(--serif);
-            font-size: 1.8rem;
-            font-weight: 400;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .philosophy-card p {
+            font-size: 0.9rem;
             color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Work Section - not sticky due to tall content */
+        #work {
+            background: var(--bg);
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.06);
+            position: relative;
+            min-height: auto;
+            z-index: 3;
+        }
+
+        /* Featured Project */
+        .featured-project {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            background: linear-gradient(135deg, #fde8e0 0%, #fef5f0 50%, #fff8f5 100%);
+            border-radius: var(--radius);
+            padding: 56px;
+            margin-bottom: 48px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(253, 232, 224, 0.5) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .featured-project:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .featured-project:hover::before {
+            opacity: 1;
+        }
+
+        .featured-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent-dark);
+            background: rgba(201, 168, 124, 0.15);
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        .featured-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .featured-title {
+            font-family: var(--serif);
+            font-size: 2.8rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: var(--text);
             letter-spacing: -0.02em;
         }
 
-        .project-item:hover .project-icon {
-            border-color: var(--accent);
-            box-shadow: 0 4px 20px rgba(201, 168, 124, 0.15);
+        .featured-desc {
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 24px;
         }
 
-        .project-item:first-child {
-            border-top: 1px solid var(--border);
+        .featured-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-lighter);
+            background: rgba(0,0,0,0.04);
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
-        .project-item:hover {
-            padding-left: 20px;
-        }
-
-        .project-item:hover .project-title {
-            color: var(--accent-dark);
-        }
-
-
-        .project-info {
+        .featured-visual {
+            position: relative;
+            z-index: 1;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .project-title {
+        .featured-icon-large {
+            width: 180px;
+            height: 180px;
+            background: white;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-md);
             font-family: var(--serif);
-            font-size: 2rem;
+            font-size: 4rem;
             font-weight: 400;
-            transition: color 0.3s ease;
-        }
-
-        .project-desc {
-            font-size: 0.95rem;
             color: var(--text-light);
         }
 
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .project-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .project-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--text-light);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-icon {
+            transform: scale(1.05);
+        }
+
+        .project-icon.icon-virtuoso { background: linear-gradient(135deg, #e8e0f0, #f0e8f5); }
+        .project-icon.icon-stringlogic { background: linear-gradient(135deg, #e0e8f8, #e8f0ff); }
+        .project-icon.icon-pecs { background: linear-gradient(135deg, #dff0ed, #e8f5f2); }
+        .project-icon.icon-dola { background: linear-gradient(135deg, #f5ebe0, #faf0e6); }
+        .project-icon.icon-agape { background: linear-gradient(135deg, #f0e6e0, #f8ede8); }
+        .project-icon.icon-math { background: linear-gradient(135deg, #e0eaf5, #e8f0fa); }
+        .project-icon.icon-breathe { background: linear-gradient(135deg, #e8f0e8, #f0f5f0); }
+        .project-icon.icon-meso { background: linear-gradient(135deg, #e5f0e8, #ecf5ef); }
+        .project-icon.icon-sudoku { background: linear-gradient(135deg, #e0e8f5, #e8f0fa); }
+        .project-icon.icon-qrcode { background: linear-gradient(135deg, #e0f5e8, #e8faf0); }
+
         .project-status {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            padding: 8px 20px;
+            padding: 5px 10px;
             border-radius: 100px;
         }
 
@@ -483,41 +825,104 @@
             color: var(--accent-dark);
         }
 
-        /* Contact */
-        .contact {
-            text-align: center;
-            padding: 200px 60px;
+        .project-card-body h3 {
+            font-family: var(--serif);
+            font-size: 1.35rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover h3 {
+            color: var(--accent-dark);
+        }
+
+        .project-card-body p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .project-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-lighter);
             background: var(--bg-warm);
-            box-shadow: 0 -20px 40px rgba(0,0,0,0.03);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-top: auto;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--bg-warm);
+            text-align: center;
+            padding: 160px 48px;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            overflow: hidden;
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.06);
+            z-index: 4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(201, 168, 124, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
         }
 
         .contact-title {
             font-family: var(--serif);
-            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 300;
             font-style: italic;
             color: var(--text);
-            margin-bottom: 48px;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
         .contact-email {
             font-family: var(--serif);
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
             color: var(--text);
             text-decoration: none;
             position: relative;
+            display: inline-block;
+            padding: 12px 0;
             transition: color 0.3s ease;
         }
 
-        .contact-email::after {
+        .contact-email::before {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: 8px;
             left: 0;
             width: 100%;
-            height: 1px;
+            height: 2px;
             background: var(--accent);
-            transform: scaleX(0);
+            transform: scaleX(1);
             transition: transform 0.4s ease;
         }
 
@@ -525,25 +930,61 @@
             color: var(--accent-dark);
         }
 
-        .contact-email:hover::after {
-            transform: scaleX(1);
+        .contact-email:hover::before {
+            transform: scaleX(0);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .social-link {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--text);
+            color: white;
+            border-color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
         }
 
         /* Footer */
         footer {
-            padding: 40px 60px;
+            padding: 32px 48px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid var(--border);
             background: var(--bg);
             position: relative;
+            z-index: 5;
         }
 
         .footer-logo {
             font-family: var(--serif);
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-light);
+            display: flex;
+            align-items: center;
         }
 
         .footer-logo .dot {
@@ -552,106 +993,38 @@
             height: 5px;
             background: var(--accent);
             border-radius: 50%;
-            margin: 0 1px;
-            vertical-align: middle;
-            margin-bottom: 5px;
+            margin: 0 2px;
+            margin-bottom: 4px;
         }
 
         footer p {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-lighter);
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .philosophy-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .project-item {
-                grid-template-columns: auto 1fr;
-                gap: 20px;
-            }
-
-            .project-icon {
-                width: 60px;
-                height: 60px;
-                border-radius: 12px;
-            }
-
-            .project-icon-placeholder {
-                font-size: 1.4rem;
-            }
-
-            .project-status {
-                grid-column: 2;
-                justify-self: start;
-            }
+        .footer-socials {
+            display: flex;
+            gap: 16px;
         }
 
-        @media (max-width: 768px) {
-            nav {
-                padding: 20px 28px;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .nav-right {
-                gap: 0;
-            }
-
-            section {
-                padding: 100px 28px;
-                position: relative;
-                min-height: auto;
-            }
-
-            .hero {
-                padding: 140px 28px 100px;
-            }
-
-            .contact {
-                padding: 140px 28px;
-            }
-
-            footer {
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-                padding: 32px 28px;
-            }
-
-            .lang-btn {
-                padding: 6px 10px;
-                font-size: 0.7rem;
-            }
+        .footer-socials a {
+            color: var(--text-lighter);
+            transition: color 0.3s ease;
         }
 
-        /* Fade in animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 1s ease forwards;
+        .footer-socials a:hover {
+            color: var(--text);
         }
 
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .footer-socials svg {
+            width: 18px;
+            height: 18px;
         }
 
-        /* Scroll reveal animations */
+        /* Scroll Reveal */
         .reveal {
             opacity: 0;
-            transform: translateY(60px);
+            transform: translateY(40px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
@@ -662,7 +1035,7 @@
 
         .reveal-item {
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(30px);
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
@@ -671,199 +1044,385 @@
             transform: translateY(0);
         }
 
-        /* Staggered delays for grid items */
-        .philosophy-item.reveal-item:nth-child(1) { transition-delay: 0.1s; }
-        .philosophy-item.reveal-item:nth-child(2) { transition-delay: 0.2s; }
-        .philosophy-item.reveal-item:nth-child(3) { transition-delay: 0.3s; }
+        /* Staggered delays */
+        .philosophy-card.reveal-item:nth-child(1) { transition-delay: 0.1s; }
+        .philosophy-card.reveal-item:nth-child(2) { transition-delay: 0.2s; }
+        .philosophy-card.reveal-item:nth-child(3) { transition-delay: 0.3s; }
 
-        .project-item.reveal-item:nth-child(1) { transition-delay: 0.05s; }
-        .project-item.reveal-item:nth-child(2) { transition-delay: 0.1s; }
-        .project-item.reveal-item:nth-child(3) { transition-delay: 0.15s; }
-        .project-item.reveal-item:nth-child(4) { transition-delay: 0.2s; }
-        .project-item.reveal-item:nth-child(5) { transition-delay: 0.25s; }
-        .project-item.reveal-item:nth-child(6) { transition-delay: 0.3s; }
-        .project-item.reveal-item:nth-child(7) { transition-delay: 0.35s; }
-        .project-item.reveal-item:nth-child(8) { transition-delay: 0.4s; }
+        .project-card.reveal-item:nth-child(1) { transition-delay: 0.05s; }
+        .project-card.reveal-item:nth-child(2) { transition-delay: 0.1s; }
+        .project-card.reveal-item:nth-child(3) { transition-delay: 0.15s; }
+        .project-card.reveal-item:nth-child(4) { transition-delay: 0.2s; }
+        .project-card.reveal-item:nth-child(5) { transition-delay: 0.25s; }
+        .project-card.reveal-item:nth-child(6) { transition-delay: 0.3s; }
+        .project-card.reveal-item:nth-child(7) { transition-delay: 0.35s; }
+        .project-card.reveal-item:nth-child(8) { transition-delay: 0.4s; }
+        .project-card.reveal-item:nth-child(9) { transition-delay: 0.45s; }
+        .project-card.reveal-item:nth-child(10) { transition-delay: 0.5s; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .philosophy-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .featured-project {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 40px;
+            }
+
+            .featured-visual {
+                order: -1;
+            }
+
+            .featured-icon-large {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+                border-radius: 28px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 24px;
+            }
+
+            .nav-center {
+                display: none;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            section {
+                padding: 80px 24px;
+                position: relative;
+                min-height: auto;
+            }
+
+            .hero {
+                padding: 120px 24px 80px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-project {
+                padding: 32px 24px;
+            }
+
+            .featured-title {
+                font-size: 2rem;
+            }
+
+            .contact {
+                padding: 100px 24px;
+                position: relative;
+                min-height: auto;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 24px;
+            }
+
+            .footer-socials {
+                order: -1;
+            }
+
+            .orb {
+                filter: blur(40px);
+                opacity: 0.3;
+            }
+
+            .orb-1 { width: 200px; height: 200px; }
+            .orb-2 { width: 150px; height: 150px; }
+            .orb-3 { width: 180px; height: 180px; }
+            .orb-4 { width: 120px; height: 120px; }
+        }
     </style>
 </head>
 <body>
     <nav>
         <a href="#" class="logo">e<span class="dot"></span>studios</a>
+        <div class="nav-center">
+            <a href="#philosophy" data-i18n="nav.philosophy">Philosophy</a>
+            <a href="#work" data-i18n="nav.work">Work</a>
+            <a href="#contact" data-i18n="nav.contact">Contact</a>
+        </div>
         <div class="nav-right">
-            <div class="nav-links">
-                <a href="#philosophy" data-i18n="nav.philosophy">Philosophy</a>
-                <a href="#work" data-i18n="nav.work">Work</a>
-                <a href="#contact" data-i18n="nav.contact">Contact</a>
-            </div>
             <div class="lang-switcher">
                 <button class="lang-btn active" data-lang="en">EN</button>
                 <button class="lang-btn" data-lang="de">DE</button>
                 <button class="lang-btn" data-lang="sq">SQ</button>
             </div>
+            <button class="menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </nav>
 
+    <div class="mobile-menu">
+        <a href="#philosophy" data-i18n="nav.philosophy">Philosophy</a>
+        <a href="#work" data-i18n="nav.work">Work</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </div>
+
     <section class="hero">
-        <p class="hero-eyebrow fade-in" data-i18n="hero.eyebrow">App Development Studio</p>
-        <h1 class="fade-in delay-1">e<span class="dot"></span>studios</h1>
-        <p class="hero-subtitle fade-in delay-2" data-i18n="hero.subtitle">Crafting beautiful, ethical applications for learning and creativity — with care.</p>
-        <div class="scroll-indicator fade-in delay-3">
-            <span data-i18n="hero.scroll">Scroll</span>
+        <div class="orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="orb orb-4"></div>
+        </div>
+        <div class="hero-content">
+            <p class="hero-eyebrow" data-i18n="hero.eyebrow">App Development Studio</p>
+            <h1>e<span class="dot"></span>studios</h1>
+            <p class="hero-subtitle" data-i18n="hero.subtitle">Crafting beautiful, ethical applications for learning and creativity — with care.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span class="scroll-text" data-i18n="hero.scroll">Scroll</span>
             <div class="scroll-line"></div>
         </div>
     </section>
 
     <section class="philosophy" id="philosophy">
-        <div class="section-header reveal">
-            <p class="section-number">01</p>
-            <h2 class="section-title" data-i18n="philosophy.title">Our Philosophy</h2>
-        </div>
-        <div class="philosophy-grid">
-            <div class="philosophy-item reveal-item">
-                <div class="philosophy-icon icon-adfree">✦</div>
-                <h3 data-i18n="philosophy.adFree.title">Ad-Free Forever</h3>
-                <p data-i18n="philosophy.adFree.desc">We believe learning should never be interrupted. Our applications contain no advertisements — ever.</p>
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <p class="section-number">01</p>
+                <h2 class="section-title" data-i18n="philosophy.title">Our Philosophy</h2>
             </div>
-            <div class="philosophy-item reveal-item">
-                <div class="philosophy-icon icon-privacy">◈</div>
-                <h3 data-i18n="philosophy.privacy.title">Privacy First</h3>
-                <p data-i18n="philosophy.privacy.desc">Your data belongs to you. We don't track, we don't collect, and we certainly don't sell.</p>
-            </div>
-            <div class="philosophy-item reveal-item">
-                <div class="philosophy-icon icon-everyone">❋</div>
-                <h3 data-i18n="philosophy.everyone.title">Made for Everyone</h3>
-                <p data-i18n="philosophy.everyone.desc">Multilingual from day one. German, English, Albanian — and always growing.</p>
+            <div class="philosophy-grid">
+                <div class="philosophy-card card-sage reveal-item">
+                    <div class="philosophy-icon icon-sage">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#7eb8a2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="philosophy.adFree.title">Ad-Free Forever</h3>
+                    <p data-i18n="philosophy.adFree.desc">We believe learning should never be interrupted. Our applications contain no advertisements — ever.</p>
+                </div>
+                <div class="philosophy-card card-blue reveal-item">
+                    <div class="philosophy-icon icon-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#8fa3bf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <circle cx="12" cy="16" r="1"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="philosophy.privacy.title">Privacy First</h3>
+                    <p data-i18n="philosophy.privacy.desc">Your data belongs to you. We don't track, we don't collect, and we certainly don't sell.</p>
+                </div>
+                <div class="philosophy-card card-rose reveal-item">
+                    <div class="philosophy-icon icon-rose">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#d4a5a5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18n="philosophy.everyone.title">Made for Everyone</h3>
+                    <p data-i18n="philosophy.everyone.desc">Multilingual from day one. German, English, Albanian — and always growing.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="work">
-        <div class="section-header reveal">
-            <p class="section-number">02</p>
-            <h2 class="section-title" data-i18n="work.title">Selected Work</h2>
-        </div>
-        <div class="projects-list">
-            <a href="https://framematch.pages.dev" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-framematch">
-                    <span class="project-icon-placeholder">FM</span>
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <p class="section-number">02</p>
+                <h2 class="section-title" data-i18n="work.title">Selected Work</h2>
+            </div>
+
+            <a href="https://framematch.pages.dev" target="_blank" class="featured-project reveal">
+                <div class="featured-content">
+                    <span class="featured-badge" data-i18n="work.featured">Featured</span>
+                    <h3 class="featured-title">FrameMatch</h3>
+                    <p class="featured-desc" data-i18n="work.framematch.desc">AI-powered shot analysis for photographers and cinematographers.</p>
+                    <span class="featured-tag">AI / Photography</span>
                 </div>
-                <div class="project-info">
-                    <h3 class="project-title">FrameMatch</h3>
-                    <p class="project-desc" data-i18n="work.framematch.desc">AI-powered shot analysis for photographers and cinematographers.</p>
+                <div class="featured-visual">
+                    <div class="featured-icon-large">FM</div>
                 </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
             </a>
-            <a href="https://music-virtuoso.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-virtuoso">
-                    <span class="project-icon-placeholder">V</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">Virtuoso</h3>
-                    <p class="project-desc" data-i18n="work.virtuoso.desc">A comprehensive music practice platform for theory, ear training, and mastery.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://stringlogic.pages.dev" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-stringlogic">
-                    <span class="project-icon-placeholder">SL</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">StringLogic</h3>
-                    <p class="project-desc" data-i18n="work.stringlogic.desc">Interactive guitar learning with chords, scales, CAGED system, and progression analysis.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://pecs-platform.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-pecs">
-                    <span class="project-icon-placeholder">P</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">PECS Learning</h3>
-                    <p class="project-desc" data-i18n="work.pecs.desc">Visual communication platform designed for children with autism.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://dola.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-dola">
-                    <span class="project-icon-placeholder">D</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">Dola</h3>
-                    <p class="project-desc" data-i18n="work.dola.desc">Discover events and happenings in your local community.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://agape-restaurant.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-agape">
-                    <span class="project-icon-placeholder">A</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">Agape</h3>
-                    <p class="project-desc" data-i18n="work.agape.desc">Digital menu for a home-based restaurant in Prishtina, Kosovo.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://math-adventure-kids.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-math">
-                    <span class="project-icon-placeholder">M</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">Math Adventures</h3>
-                    <p class="project-desc" data-i18n="work.math.desc">Interactive mathematics learning for grades 1–13.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://breathe-calm.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon">
-                    <span class="project-icon-placeholder">B</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">Breathe</h3>
-                    <p class="project-desc" data-i18n="work.breathe.desc">Meditative breathing exercises to calm your mind.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://meso-gjermanisht.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-meso">
-                    <span class="project-icon-placeholder">M</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">MesoGjermanisht</h3>
-                    <p class="project-desc" data-i18n="work.meso.desc">German language lessons crafted for Albanian speakers.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://sudoku-estudios.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-sudoku">
-                    <span class="project-icon-placeholder">S</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">Sudoku</h3>
-                    <p class="project-desc" data-i18n="work.sudoku.desc">A beautiful brain-training puzzle game with hints and notes mode.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
-            <a href="https://qrcode.e-studios.vercel.app" target="_blank" class="project-item reveal-item">
-                <div class="project-icon icon-qrcode">
-                    <span class="project-icon-placeholder">Q</span>
-                </div>
-                <div class="project-info">
-                    <h3 class="project-title">QR Generator</h3>
-                    <p class="project-desc" data-i18n="work.qrcode.desc">Create QR codes for URLs, contacts, WiFi, and more with customizable frames.</p>
-                </div>
-                <span class="project-status status-live" data-i18n="work.status.live">Live</span>
-            </a>
+
+            <div class="projects-grid">
+                <a href="https://music-virtuoso.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-virtuoso">V</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>Virtuoso</h3>
+                        <p data-i18n="work.virtuoso.desc">A comprehensive music practice platform for theory, ear training, and mastery.</p>
+                    </div>
+                    <span class="project-tag">Music</span>
+                </a>
+
+                <a href="https://stringlogic.pages.dev" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-stringlogic">SL</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>StringLogic</h3>
+                        <p data-i18n="work.stringlogic.desc">Interactive guitar learning with chords, scales, CAGED system, and progression analysis.</p>
+                    </div>
+                    <span class="project-tag">Music</span>
+                </a>
+
+                <a href="https://pecs-platform.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-pecs">P</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>PECS Learning</h3>
+                        <p data-i18n="work.pecs.desc">Visual communication platform designed for children with autism.</p>
+                    </div>
+                    <span class="project-tag">Education</span>
+                </a>
+
+                <a href="https://dola.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-dola">D</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>Dola</h3>
+                        <p data-i18n="work.dola.desc">Discover events and happenings in your local community.</p>
+                    </div>
+                    <span class="project-tag">Community</span>
+                </a>
+
+                <a href="https://agape-restaurant.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-agape">A</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>Agape</h3>
+                        <p data-i18n="work.agape.desc">Digital menu for a home-based restaurant in Prishtina, Kosovo.</p>
+                    </div>
+                    <span class="project-tag">Restaurant</span>
+                </a>
+
+                <a href="https://math-adventure-kids.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-math">M</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>Math Adventures</h3>
+                        <p data-i18n="work.math.desc">Interactive mathematics learning for grades 1–13.</p>
+                    </div>
+                    <span class="project-tag">Education</span>
+                </a>
+
+                <a href="https://breathe-calm.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-breathe">B</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>Breathe</h3>
+                        <p data-i18n="work.breathe.desc">Meditative breathing exercises to calm your mind.</p>
+                    </div>
+                    <span class="project-tag">Wellness</span>
+                </a>
+
+                <a href="https://meso-gjermanisht.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-meso">M</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>MesoGjermanisht</h3>
+                        <p data-i18n="work.meso.desc">German language lessons crafted for Albanian speakers.</p>
+                    </div>
+                    <span class="project-tag">Language</span>
+                </a>
+
+                <a href="https://sudoku-estudios.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-sudoku">S</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>Sudoku</h3>
+                        <p data-i18n="work.sudoku.desc">A beautiful brain-training puzzle game with hints and notes mode.</p>
+                    </div>
+                    <span class="project-tag">Games</span>
+                </a>
+
+                <a href="https://qrcode.e-studios.vercel.app" target="_blank" class="project-card reveal-item">
+                    <div class="project-card-header">
+                        <div class="project-icon icon-qrcode">Q</div>
+                        <span class="project-status status-live" data-i18n="work.status.live">Live</span>
+                    </div>
+                    <div class="project-card-body">
+                        <h3>QR Generator</h3>
+                        <p data-i18n="work.qrcode.desc">Create QR codes for URLs, contacts, WiFi, and more with customizable frames.</p>
+                    </div>
+                    <span class="project-tag">Utility</span>
+                </a>
+            </div>
         </div>
     </section>
 
     <section class="contact" id="contact">
-        <h2 class="contact-title reveal" data-i18n="contact.title">Let's create something<br>beautiful together.</h2>
-        <a href="mailto:contact@e-studios.net" class="contact-email reveal">contact@e-studios.net</a>
+        <div class="contact-content">
+            <h2 class="contact-title reveal" data-i18n="contact.title">Let's create something<br>beautiful together.</h2>
+            <a href="mailto:contact@e-studios.net" class="contact-email reveal">contact@e-studios.net</a>
+            <div class="social-links reveal">
+                <a href="https://github.com/e-studios" target="_blank" class="social-link" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="https://twitter.com/estudios_net" target="_blank" class="social-link" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
     </section>
 
     <footer>
         <span class="footer-logo">e<span class="dot"></span>studios</span>
         <p data-i18n="footer.text">© 2025 e-studios. Based in Germany.</p>
+        <div class="footer-socials">
+            <a href="https://github.com/e-studios" target="_blank" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+            <a href="https://twitter.com/estudios_net" target="_blank" aria-label="Twitter">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+        </div>
     </footer>
 
     <script>
@@ -896,6 +1455,7 @@
                 },
                 work: {
                     title: "Selected Work",
+                    featured: "Featured",
                     framematch: {
                         desc: "AI-powered shot analysis for photographers and cinematographers."
                     },
@@ -969,6 +1529,7 @@
                 },
                 work: {
                     title: "Ausgewählte Arbeiten",
+                    featured: "Highlight",
                     framematch: {
                         desc: "KI-gestützte Bildanalyse für Fotografen und Kameraleute."
                     },
@@ -1042,6 +1603,7 @@
                 },
                 work: {
                     title: "Punët e Zgjedhura",
+                    featured: "Kryesor",
                     framematch: {
                         desc: "Analizë e fotografive me AI për fotografë dhe kinematografë."
                     },
@@ -1111,7 +1673,7 @@
             localStorage.setItem('preferred-language', lang);
         }
 
-        // Initialize
+        // Initialize language switcher
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
         });
@@ -1126,6 +1688,40 @@
         } else if (supportedLangs.includes(browserLang)) {
             setLanguage(browserLang);
         }
+
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Nav scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
 
         // Scroll reveal animation
         const revealObserver = new IntersectionObserver((entries) => {
